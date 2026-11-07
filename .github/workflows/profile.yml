@@ -1,0 +1,62 @@
+name: Update profile visuals
+
+on:
+  schedule:
+    # 00:23 UTC = 08:23 Asia/Shanghai; scheduled runs may be delayed.
+    - cron: '23 0 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/profile.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: profile-visuals
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Generate snake animations
+        uses: Platane/snk/svg-only@v3
+        with:
+          github_user_name: ${{ github.repository_owner }}
+          outputs: |
+            dist/github-snake.svg
+            dist/github-snake-dark.svg?palette=github-dark
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate 3D contribution calendar
+        uses: yoshi389111/github-profile-3d-contrib@v0.9.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          USERNAME: ${{ github.repository_owner }}
+
+      - name: Collect and verify images
+        shell: bash
+        run: |
+          mkdir -p dist
+          cp profile-3d-contrib/profile-gitblock.svg dist/
+          cp profile-3d-contrib/profile-night-green.svg dist/
+          for asset in github-snake.svg github-snake-dark.svg profile-gitblock.svg profile-night-green.svg; do
+            test -s "dist/$asset"
+          done
+
+      - name: Publish images to output branch
+        uses: crazy-max/ghaction-github-pages@v5
+        with:
+          target_branch: output
+          build_dir: dist
+          keep_history: true
+          allow_empty_commit: false
+          commit_message: 'Update contribution visuals'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
