@@ -1,19 +1,10 @@
 <h1 align="center">Hi, I'm Gary.</h1>
-<p align="center"><b>Sequential Decision-Making &amp; World Modeling for Adaptive Agents</b></p>
 <p align="center">Learning to make better decisions in a changing world.</p>
 
 I'm an undergraduate studying Artificial Intelligence at Nanjing University.
 
-- **Online learning & bandits** — learning and exploration in non-stationary environments.
-- **Reinforcement learning** — from learning algorithms to agent training systems.
-- **World models & adaptive agents** — understanding how agents learn from interaction.
 
-### Building & exploring
 
-| Project | Focus |
-| :--- | :--- |
-| [minimal-bandit-platform](https://github.com/Gary-CF/minimal-bandit-platform) | Bandit algorithms, non-stationarity, and reproducible experiments |
-| [Online_RLHF](https://github.com/Gary-CF/Online_RLHF) | My fork for contributions and experiments in online RLHF |
 
 ### One contribution at a time
 
